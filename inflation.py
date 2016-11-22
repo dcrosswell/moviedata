@@ -1,3 +1,6 @@
+import pandas as pd
+
+#dictionary of average ticket values per year form boxofficemojo
 dict = {'2016': 8.61, '2015': 8.43, '2014': 8.17, '2013': 8.13, \
 '2012': 7.96, '2011': 7.93, '2010': 7.89, '2009': 7.50, '2008': 7.18, \
 '2007': 6.88, '2006': 6.55, '2005': 6.41, '2004': 6.21, '2003': 6.03, \
@@ -14,3 +17,18 @@ dict = {'2016': 8.61, '2015': 8.43, '2014': 8.17, '2013': 8.13, \
 '1944': 0.32, '1943': 0.29, '1942': 0.27, '1941': 0.25, '1940': 0.24, \
 '1939': 0.23, '1936': 0.25, '1935': 0.24, '1934': 0.23, '1929': 0.35, \
 '1924': 0.25, '1910': 0.07 }
+
+#adjust gross values for inflation using dictionary
+data = pd.read_excel('movies_data.xlsx')
+writer = open('adj_gross.txt', 'w')
+for i in range(len(data)):
+	year = data['Year'][i]
+	if str(year) in dict:
+		gross = data['Lifetime Gross'][i]
+		ticket = dict[str(year)]
+		writer.write(str((gross/ticket)*8.61) + '\n')
+	else:
+		writer.write('N/A' + '\n')
+writer.close()
+
+
